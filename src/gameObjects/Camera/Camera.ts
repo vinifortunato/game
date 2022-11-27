@@ -4,6 +4,8 @@ import GameObject from '../GameObject';
 
 class Camera extends GameObject {
 
+	private static instance: Camera;
+
 	private moveSpeed: number;
 	private friction: number;
 
@@ -12,6 +14,13 @@ class Camera extends GameObject {
 		this.velocity = { x: 0, y: 0 };
 		this.moveSpeed = 50;
 		this.friction = 0.9;
+	}
+
+	public static getInstance(): Camera {
+		if (!Camera.instance) {
+			Camera.instance = new Camera();
+		}
+		return Camera.instance;
 	}
 
 	update(deltaTime: number) {

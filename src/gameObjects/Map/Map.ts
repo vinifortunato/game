@@ -1,5 +1,7 @@
 import { KeyHandler } from '../../handlers';
 import { Context, Tile, TileMap } from '../../types/CommonTypes';
+import { screenToWorld } from '../../utils/position';
+import Camera from '../Camera';
 import GameObject from '../GameObject';
 
 class Map extends GameObject {
@@ -35,23 +37,25 @@ class Map extends GameObject {
 				this.tiles[row][column] = tile;
 			}
 		}
+		// eslint-disable-next-line no-console
 		console.log('Map build complete');
 	}
 
 	update() {
+		const camera = Camera.getInstance();
 		const keyHandler = KeyHandler.getInstance();
 
 		if (keyHandler.keys['mouseLeft']) {
-			// const mouseClickDetails = keyHandler.keys['mouseLeft'];
-			// const worldPosition = screenToWorld(mouseClickDetails.x, mouseClickDetails.y, camera.position);
+			const worldPosition = screenToWorld(keyHandler.mousePosition, camera.getPosition());
 
-			// const tileX = Math.floor(worldPosition.x / this.tileWidth);
-			// const tileY = Math.floor(worldPosition.y / this.tileHeight);
+			const tileX = Math.floor(worldPosition.x / this.tileWidth);
+			const tileY = Math.floor(worldPosition.y / this.tileHeight);
 
-			// const tile = this.getTile(tileX, tileY);
-			// if (tile) {
-			// console.log('Click on tile', tile);
-			//}
+			const tile = this.getTile(tileX, tileY);
+			if (tile) {
+				// eslint-disable-next-line no-console
+				console.log('Click on tile', tile);
+			}
 
 		}
 	}

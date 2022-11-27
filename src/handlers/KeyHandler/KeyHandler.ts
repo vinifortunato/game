@@ -1,11 +1,13 @@
-import { Dictionary } from '../../types/CommonTypes';
+import { Dictionary, Vector2D } from '../../types/CommonTypes';
 
 class KeyHandler {
 
 	private static instance: KeyHandler;
 
-	keys: Dictionary<boolean>;
-	mouseKeys: Dictionary<string>;
+	public keys: Dictionary<boolean>;
+	public mousePosition: Vector2D;
+
+	private mouseKeys: Dictionary<string>;
 
 	constructor() {
 		this.keys = {};
@@ -15,6 +17,8 @@ class KeyHandler {
 			1: 'mouseMiddle',
 			2: 'mouseRight'
 		};
+
+		this.mousePosition = { x: 0, y: 0 };
 
 		document.addEventListener('keydown', (event) => {
 			const keyName = event.key;
@@ -35,16 +39,10 @@ class KeyHandler {
 			const keyName = this.mouseKeys[event.button];
 			this.handleKeyUp(keyName);
 		});
-	}
 
-	handleKeyDown(keyName: string, details = true) {
-		console.log(`${keyName} down`, details);
-		this.keys[keyName] = true;
-	}
-
-	handleKeyUp(keyName: string, details = false) {
-		console.log(`${keyName} up`, details);
-		this.keys[keyName] = false;
+		document.addEventListener('mousemove', (event) => {
+			this.handleMousePosition({ x: event.clientX, y: event.clientY });
+		});
 	}
 
 	public static getInstance(): KeyHandler {
@@ -52,6 +50,18 @@ class KeyHandler {
 			KeyHandler.instance = new KeyHandler();
 		}
 		return KeyHandler.instance;
+	}
+
+	private handleKeyDown(keyName: string): void {
+		this.keys[keyName] = true;
+	}
+
+	private handleKeyUp(keyName: string): void {
+		this.keys[keyName] = false;
+	}
+
+	private handleMousePosition(position: Vector2D): void {
+		this.mousePosition = position;
 	}
 }
 
