@@ -4,7 +4,7 @@ class KeyHandler {
 
     private static instance: KeyHandler;
 
-    keys: Dictionary<string>;
+    keys: Dictionary<boolean>;
     mouseKeys: Dictionary<string>;
 
 	constructor() {
@@ -39,10 +39,12 @@ class KeyHandler {
 
 	handleKeyDown(keyName: string, details = true) {
 		console.log(`${keyName} down`, details);
+        this.keys[keyName] = true;
 	}
 
 	handleKeyUp(keyName: string, details = false) {
 		console.log(`${keyName} up`, details);
+        this.keys[keyName] = false;
 	}
 
     public static getInstance(): KeyHandler {
