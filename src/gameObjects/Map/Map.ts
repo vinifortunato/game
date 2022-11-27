@@ -1,9 +1,9 @@
 import { KeyHandler } from '../../handlers';
-import { Context, Tile, TileMap } from '../../types/CommonTypes';
+import { Context, TileMap } from '../../types/CommonTypes';
 import { screenToWorld } from '../../utils/position';
 import Camera from '../Camera';
 import GameObject from '../GameObject';
-
+import Tile from '../Tile';
 class Map extends GameObject {
 
 	private columns: number;
@@ -29,12 +29,7 @@ class Map extends GameObject {
 			}
 			for(let column = 0; column < this.columns; column++) {
 				const y = column * this.tileHeight;
-				const tile = {
-					x,
-					y,
-					content: null
-				};
-				this.tiles[row][column] = tile;
+				this.tiles[row][column] = new Tile({ x, y }, this.tileWidth, this.tileHeight);
 			}
 		}
 		// eslint-disable-next-line no-console
@@ -42,11 +37,9 @@ class Map extends GameObject {
 	}
 
 	update() {
-		const camera = Camera.getInstance();
-		const keyHandler = KeyHandler.getInstance();
 
-		if (keyHandler.keys['mouseLeft']) {
-			const worldPosition = screenToWorld(keyHandler.mousePosition, camera.getPosition());
+		if (KeyHandler.getInstance().keys['mouseLeft']) {
+			const worldPosition = screenToWorld(KeyHandler.getInstance().mousePosition, Camera.getInstance().getPosition());
 
 			const tileX = Math.floor(worldPosition.x / this.tileWidth);
 			const tileY = Math.floor(worldPosition.y / this.tileHeight);
@@ -64,29 +57,9 @@ class Map extends GameObject {
 		for(let row = 0; row < this.rows; row++) {
 			for(let column = 0; column < this.columns; column++) {
 				const tile = this.tiles[row][column];
-				this.renderTile(context, tile);
+				tile.render(context);
 			}
 		}
-	}
-
-	renderTile(context: Context, tile: Tile) {
-		const { x, y, details } = tile;
-		context.beginPath();
-		context.fillStyle = '#fff';
-
-		const parsedX = x;
-		const parsedY = y;
-
-		if (details) {
-			context.fillRect(parsedX, parsedY, this.tileWidth, this.tileHeight);
-		} else {
-			context.fillRect(parsedX, parsedY, this.tileWidth, this.tileHeight);
-		}
-
-		context.strokeStyle = '#D3D3D3';
-		context.rect(parsedX, parsedY, this.tileWidth, this.tileHeight);
-		context.stroke();
-		context.closePath();
 	}
 
 	getTile(x: number, y: number): Tile | null {

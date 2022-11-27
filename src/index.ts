@@ -10,6 +10,7 @@ import { Car, Map } from './gameObjects';
 import Camera from './gameObjects/Camera';
 
 import GameObject from './gameObjects/GameObject';
+import { KeyHandler } from './handlers';
 import { Context } from './types/CommonTypes';
 
 let canvas: HTMLCanvasElement | undefined = undefined;
@@ -123,11 +124,15 @@ function renderStats(context: Context) {
 	context.fillStyle = '#000';
 	context.fillText(`w: ${canvas.width} h: ${canvas.height}`, canvas.width - 5, 40);
 
+	// Mouse position
+	context.font = '14px Arial';
+	context.textAlign = 'right';
+	context.fillStyle = '#000';
+	context.fillText(`Mouse x: ${Math.floor(KeyHandler.getInstance().mousePosition.x)} y: ${Math.floor(KeyHandler.getInstance().mousePosition.y)}`, canvas.width - 5, 60);
+
 	// Camera position
 	context.font = '14px Arial';
 	context.textAlign = 'right';
 	context.fillStyle = '#000';
-
-	const cameraPosition = camera.getPosition();
-	context.fillText(`Camera x: ${Math.floor(-cameraPosition.x)} y: ${Math.floor(-cameraPosition.y)}`, canvas.width - 5, 60);
+	context.fillText(`Camera x: ${Math.floor(-camera.getPosition().x)} y: ${Math.floor(-camera.getPosition().y)}`, canvas.width - 5, 80);
 }
