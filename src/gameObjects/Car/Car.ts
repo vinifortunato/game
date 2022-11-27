@@ -1,14 +1,21 @@
+import { KeyHandler } from '../../handlers';
+import { Context, Vector2D } from '../../types/CommonTypes';
 import GameObject from '../GameObject';
 
 class Car extends GameObject {
 
-	constructor(props) {
-		super({ ...props });
+    private moveSpeed: number;
+    private friction: number;
+
+	constructor(position: Vector2D) {
+        super({ position, size: { x: 20, y: 20 } });
 		this.moveSpeed = 50;
 		this.friction = 0.9;
 	}
 
-	update(deltaTime, keyHandler) {
+	update(deltaTime: number) {
+        const keyHandler = KeyHandler.getInstance();
+
 		// Horizontal movement
 		if (keyHandler.keys['a']) {
 			this.velocity.x -= this.moveSpeed;
@@ -31,14 +38,14 @@ class Car extends GameObject {
 		this.velocity.y *= this.friction;
 	}
 
-	render(context) {
+	render(context: Context) {
 		context.beginPath();
 		context.fillStyle = 'blue';
-		context.fillRect(this.position.x, this.position.y, this.size.w, this.size.h);
+		context.fillRect(this.position.x, this.position.y, this.size.x, this.size.y);
 
 		context.beginPath();
 		context.strokeStyle = '#000';
-		const center = { x: this.position.x + this.size.w / 2, y: this.position.y + this.size.h / 2 };
+		const center = { x: this.position.x + this.size.x / 2, y: this.position.y + this.size.y / 2 };
 		context.moveTo(center.x, center.y);
 		context.lineTo(center.x + this.velocity.x, center.y + this.velocity.y);
 		context.stroke();

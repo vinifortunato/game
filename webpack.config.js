@@ -12,7 +12,7 @@ module.exports = () => {
 
 	return {
 		entry: {
-			app: './src/index.js',
+			app: './src/index.ts',
 		},
 		devtool: 'source-map',
 		devServer: {

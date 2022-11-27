@@ -1,6 +1,11 @@
+import { KeyHandler } from '../../handlers';
+import { Context } from '../../types/CommonTypes';
 import GameObject from '../GameObject';
 
 class Camera extends GameObject {
+
+    private moveSpeed: number;
+    private friction: number;
 
 	constructor() {
 		super({});
@@ -9,7 +14,9 @@ class Camera extends GameObject {
 		this.friction = 0.9;
 	}
 
-	update(deltaTime, keyHandler) {
+	update(deltaTime: number) {
+        const keyHandler = KeyHandler.getInstance();
+
 		// Horizontal movement
 		if (keyHandler.keys['ArrowLeft']) {
 			this.velocity.x -= this.moveSpeed;
@@ -32,7 +39,7 @@ class Camera extends GameObject {
 		this.velocity.y *= this.friction;
 	}
 
-	render(context) {
+	render(context: Context) {
 		const { x, y } = this.position;
 
 		context.beginPath();

@@ -1,4 +1,11 @@
+import { Dictionary } from '../../types/CommonTypes';
+
 class KeyHandler {
+
+    private static instance: KeyHandler;
+
+    keys: Dictionary<string>;
+    mouseKeys: Dictionary<string>;
 
 	constructor() {
 		this.keys = {};
@@ -21,11 +28,7 @@ class KeyHandler {
 
 		document.addEventListener('mousedown', (event) => {
 			const keyName = this.mouseKeys[event.button];
-			const details = {
-				x: event.x,
-				y: event.y
-			};
-			this.handleKeyDown(keyName, details);
+			this.handleKeyDown(keyName);
 		});
 
 		document.addEventListener('mouseup', (event) => {
@@ -34,15 +37,20 @@ class KeyHandler {
 		});
 	}
 
-	handleKeyDown(keyName, details = true) {
+	handleKeyDown(keyName: string, details = true) {
 		console.log(`${keyName} down`, details);
-		this.keys[keyName] = details;
 	}
 
-	handleKeyUp(keyName, details = false) {
+	handleKeyUp(keyName: string, details = false) {
 		console.log(`${keyName} up`, details);
-		this.keys[keyName] = details;
 	}
+
+    public static getInstance(): KeyHandler {
+        if (!KeyHandler.instance) {
+            KeyHandler.instance = new KeyHandler();
+        }
+        return KeyHandler.instance;
+    }
 }
 
 export default KeyHandler;

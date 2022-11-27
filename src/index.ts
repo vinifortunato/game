@@ -6,18 +6,19 @@ https://spicyyoghurt.com/tutorials/html5-javascript-game-development
 */
 
 import '../public/style.css';
+import { Car, Map } from './gameObjects';
+import Camera from './gameObjects/Camera';
 
-import { Camera, Car, Map } from './gameObjects';
-import { KeyHandler } from './handlers';
+import GameObject from './gameObjects/GameObject';
+import { Context } from './types/CommonTypes';
 
-let canvas = undefined;
-let context = undefined;
+let canvas: HTMLCanvasElement | undefined = undefined;
+let context: Context | null = null;
 
 let oldTimeStamp = 0;
 let fps = 0;
 
-const keyHandler = new KeyHandler();
-const gameObjects = [];
+const gameObjects: Array<GameObject> = [];
 
 const map = new Map();
 gameObjects.push(map);
@@ -25,10 +26,7 @@ gameObjects.push(map);
 const camera = new Camera();
 gameObjects.push(camera);
 
-const car = new Car({
-	position: { x: 500, y: 0 },
-	size: { w: 20, h: 20 }
-});
+const car = new Car({ x: 500, y: 0 });
 gameObjects.push(car);
 
 window.onload = init;
@@ -54,11 +52,14 @@ function init() {
 }
 
 function handleWindowResize() {
+    if (!canvas) {
+        return;
+    }
 	canvas.width  = window.innerWidth;
 	canvas.height = window.innerHeight;
 }
 
-function gameLoop(timeStamp) {
+function gameLoop(timeStamp: number) {
 	const deltaTime = (timeStamp - oldTimeStamp) / 1000;
 	oldTimeStamp = timeStamp;
 	fps = Math.round(1 / deltaTime);
@@ -69,20 +70,35 @@ function gameLoop(timeStamp) {
 	window.requestAnimationFrame(gameLoop);
 }
 
-function update(deltaTime) {
-	gameObjects.forEach((gameObject) => {
-		gameObject.update(deltaTime, keyHandler, camera);
+function update(deltaTime: number) {
+	gameObjects.forEach((gameObject: GameObject) => {
+		gameObject.update(deltaTime);
 	});
 }
 
 function render() {
+    if (!canvas) {
+        console.error('Invalid canvas');
+        return;
+    }
+
+    if (!context) {
+        console.error('Invalid context');
+        return;
+    }
+
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
 	context.save();
-	context.translate(-camera.position.x, -camera.position.y);
 
-	gameObjects.forEach((gameObject) => {
-		gameObject.render(context, camera);
+    const cameraPosition = camera.getPosition();
+	context.translate(-cameraPosition.x, -cameraPosition.y);
+
+	gameObjects.forEach((gameObject: GameObject) => {
+        if (!context) {
+            return;
+        }
+		gameObject.render(context);
 	});
 
 	context.restore();
@@ -90,7 +106,11 @@ function render() {
 	renderStats(context);
 }
 
-function renderStats(context) {
+function renderStats(context: Context) {
+    if (!canvas) {
+        return;
+    }
+
 	// FPS
 	context.font = '14px Arial';
 	context.textAlign = 'right';
@@ -107,5 +127,7 @@ function renderStats(context) {
 	context.font = '14px Arial';
 	context.textAlign = 'right';
 	context.fillStyle = '#000';
-	context.fillText(`x: ${Math.floor(-camera.position.x)} y: ${Math.floor(-camera.position.y)}`, canvas.width - 5, 60);
+
+    const cameraPosition = camera.getPosition();
+	context.fillText(`Camera x: ${Math.floor(-cameraPosition.x)} y: ${Math.floor(-cameraPosition.y)}`, canvas.width - 5, 60);
 }
