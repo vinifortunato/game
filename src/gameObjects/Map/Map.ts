@@ -1,15 +1,14 @@
 import { KeyHandler } from '../../handlers';
 import { Context, Tile, TileMap } from '../../types/CommonTypes';
-import { screenToWorld } from '../../utils/position';
 import GameObject from '../GameObject';
 
 class Map extends GameObject {
 
-    private columns: number;
-    private rows: number;
-    private tileHeight: number;
-    private tiles: TileMap;
-    private tileWidth: number;
+	private columns: number;
+	private rows: number;
+	private tileHeight: number;
+	private tiles: TileMap;
+	private tileWidth: number;
 
 	constructor() {
 		super({});
@@ -21,12 +20,12 @@ class Map extends GameObject {
 	}
 
 	build() {
-		for(var row = 0; row < this.rows; row++) {
+		for(let row = 0; row < this.rows; row++) {
 			const x = row * this.tileWidth;
 			if (!this.tiles[row]) {
 				this.tiles[row] = [];
 			}
-			for(var column = 0; column < this.columns; column++) {
+			for(let column = 0; column < this.columns; column++) {
 				const y = column * this.tileHeight;
 				const tile = {
 					x,
@@ -39,8 +38,8 @@ class Map extends GameObject {
 		console.log('Map build complete');
 	}
 
-	update(deltaTime: number) {
-        const keyHandler = KeyHandler.getInstance();
+	update() {
+		const keyHandler = KeyHandler.getInstance();
 
 		if (keyHandler.keys['mouseLeft']) {
 			// const mouseClickDetails = keyHandler.keys['mouseLeft'];
@@ -51,7 +50,7 @@ class Map extends GameObject {
 
 			// const tile = this.getTile(tileX, tileY);
 			// if (tile) {
-				// console.log('Click on tile', tile);
+			// console.log('Click on tile', tile);
 			//}
 
 		}

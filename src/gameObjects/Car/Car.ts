@@ -4,17 +4,17 @@ import GameObject from '../GameObject';
 
 class Car extends GameObject {
 
-    private moveSpeed: number;
-    private friction: number;
+	private moveSpeed: number;
+	private friction: number;
 
 	constructor(position: Vector2D) {
-        super({ position, size: { x: 20, y: 20 } });
+		super({ position, size: { x: 20, y: 20 } });
 		this.moveSpeed = 50;
 		this.friction = 0.9;
 	}
 
 	update(deltaTime: number) {
-        const keyHandler = KeyHandler.getInstance();
+		const keyHandler = KeyHandler.getInstance();
 
 		// Horizontal movement
 		if (keyHandler.keys['a']) {

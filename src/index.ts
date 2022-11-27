@@ -52,9 +52,9 @@ function init() {
 }
 
 function handleWindowResize() {
-    if (!canvas) {
-        return;
-    }
+	if (!canvas) {
+		return;
+	}
 	canvas.width  = window.innerWidth;
 	canvas.height = window.innerHeight;
 }
@@ -77,27 +77,27 @@ function update(deltaTime: number) {
 }
 
 function render() {
-    if (!canvas) {
-        console.error('Invalid canvas');
-        return;
-    }
+	if (!canvas) {
+		console.error('Invalid canvas');
+		return;
+	}
 
-    if (!context) {
-        console.error('Invalid context');
-        return;
-    }
+	if (!context) {
+		console.error('Invalid context');
+		return;
+	}
 
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
 	context.save();
 
-    const cameraPosition = camera.getPosition();
+	const cameraPosition = camera.getPosition();
 	context.translate(-cameraPosition.x, -cameraPosition.y);
 
 	gameObjects.forEach((gameObject: GameObject) => {
-        if (!context) {
-            return;
-        }
+		if (!context) {
+			return;
+		}
 		gameObject.render(context);
 	});
 
@@ -107,9 +107,9 @@ function render() {
 }
 
 function renderStats(context: Context) {
-    if (!canvas) {
-        return;
-    }
+	if (!canvas) {
+		return;
+	}
 
 	// FPS
 	context.font = '14px Arial';
@@ -128,6 +128,6 @@ function renderStats(context: Context) {
 	context.textAlign = 'right';
 	context.fillStyle = '#000';
 
-    const cameraPosition = camera.getPosition();
+	const cameraPosition = camera.getPosition();
 	context.fillText(`Camera x: ${Math.floor(-cameraPosition.x)} y: ${Math.floor(-cameraPosition.y)}`, canvas.width - 5, 60);
 }

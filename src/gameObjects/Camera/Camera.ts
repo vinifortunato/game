@@ -4,8 +4,8 @@ import GameObject from '../GameObject';
 
 class Camera extends GameObject {
 
-    private moveSpeed: number;
-    private friction: number;
+	private moveSpeed: number;
+	private friction: number;
 
 	constructor() {
 		super({});
@@ -15,7 +15,7 @@ class Camera extends GameObject {
 	}
 
 	update(deltaTime: number) {
-        const keyHandler = KeyHandler.getInstance();
+		const keyHandler = KeyHandler.getInstance();
 
 		// Horizontal movement
 		if (keyHandler.keys['ArrowLeft']) {

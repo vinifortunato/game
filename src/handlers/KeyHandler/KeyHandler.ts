@@ -2,10 +2,10 @@ import { Dictionary } from '../../types/CommonTypes';
 
 class KeyHandler {
 
-    private static instance: KeyHandler;
+	private static instance: KeyHandler;
 
-    keys: Dictionary<boolean>;
-    mouseKeys: Dictionary<string>;
+	keys: Dictionary<boolean>;
+	mouseKeys: Dictionary<string>;
 
 	constructor() {
 		this.keys = {};
@@ -39,20 +39,20 @@ class KeyHandler {
 
 	handleKeyDown(keyName: string, details = true) {
 		console.log(`${keyName} down`, details);
-        this.keys[keyName] = true;
+		this.keys[keyName] = true;
 	}
 
 	handleKeyUp(keyName: string, details = false) {
 		console.log(`${keyName} up`, details);
-        this.keys[keyName] = false;
+		this.keys[keyName] = false;
 	}
 
-    public static getInstance(): KeyHandler {
-        if (!KeyHandler.instance) {
-            KeyHandler.instance = new KeyHandler();
-        }
-        return KeyHandler.instance;
-    }
+	public static getInstance(): KeyHandler {
+		if (!KeyHandler.instance) {
+			KeyHandler.instance = new KeyHandler();
+		}
+		return KeyHandler.instance;
+	}
 }
 
 export default KeyHandler;

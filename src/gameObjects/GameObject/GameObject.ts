@@ -1,10 +1,10 @@
-import { Context, Vector2D } from "../../types/CommonTypes";
+import { Context, Vector2D } from '../../types/CommonTypes';
 
 abstract class GameObject {
 
-    protected position: Vector2D;
-    protected size: Vector2D;
-    protected velocity: Vector2D;
+	protected position: Vector2D;
+	protected size: Vector2D;
+	protected velocity: Vector2D;
 
 	constructor({ position = { x: 0, y: 0 }, size = { x: 10, y: 10 }, velocity = { x: 0, y: 0 } }) {
 		this.position = position;
